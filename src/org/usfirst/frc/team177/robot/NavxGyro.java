@@ -1,7 +1,6 @@
 package org.usfirst.frc.team177.robot;
 
-
-import org.usfirst.frc.team177.lib.RioLoggerThread;
+import org.usfirst.frc.team177.lib.RioLogger;
 import org.usfirst.frc.team177.lib.SmartPID;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -11,21 +10,19 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 public class NavxGyro extends AHRS implements PIDOutput {
-	private RioLoggerThread logger = RioLoggerThread.getInstance();
-	private SmartPID gyroPID = new SmartPID(0.0,0.035,0.003,0.0);
-	
+	private SmartPID gyroPID = new SmartPID(0.0, 0.035, 0.003, 0.0);
+
 	private PIDController turnController;
 	private double toleranceDegrees = 2.0;
 	private double rotateToAngleRate;
 
-
 	public NavxGyro(Port spi_port_id) throws RuntimeException {
 		super(spi_port_id);
 	}
-	
+
 	public void initTurnController() {
-		logger.log("Gyro PID (P,I,D) = " + gyroPID.getP() + ", " + gyroPID.getI() + ", " + gyroPID.getD());
-		logger.log("Gyro Degree Tolerance = " + toleranceDegrees);
+		RioLogger.debugLog("Gyro PID (P,I,D) = " + gyroPID.getP() + ", " + gyroPID.getI() + ", " + gyroPID.getD());
+		RioLogger.debugLog("Gyro Degree Tolerance = " + toleranceDegrees);
 		// Configure PID
 		turnController = new PIDController(gyroPID.getP(), gyroPID.getI(), gyroPID.getD(), gyroPID.getFF(), this, this);
 		turnController.setInputRange(-180.0f, 180.0f);
@@ -52,10 +49,10 @@ public class NavxGyro extends AHRS implements PIDOutput {
 		rotateToAngleRate = 0; // This value will be updated in the pidWrite() method.
 		turnController.enable();
 	}
-	
+
 	public void stopTurn() {
 		turnController.disable();
-		//zeroYaw();
+		// zeroYaw();
 	}
 
 	public boolean hasStopped() {
@@ -67,5 +64,28 @@ public class NavxGyro extends AHRS implements PIDOutput {
 	/* based upon navX MXP yaw angle input and PID Coefficients. */
 	public void pidWrite(double output) {
 		rotateToAngleRate = output;
+	}
+
+	public void calibrate() {
+		try {
+			int maxCalibrationPasses = 20;
+			for (int iCalibrationPasses = 0; iCalibrationPasses < maxCalibrationPasses; iCalibrationPasses++) {
+				if (!OI.gyro.isCalibrating())
+					break;
+				RioLogger.log("robotInit() gyro is calibrating, pass " + iCalibrationPasses);
+				try {
+					Thread.sleep(100); // Sleep 1/10 of second
+				} catch (InterruptedException e) {
+					RioLogger.errorLog("navX-MXP initialization thread exception " + e);
+				}
+			}
+
+			RioLogger.log("robotInit() gyro is calibrating " + OI.gyro.isCalibrating());
+			if (!OI.gyro.isCalibrating())
+				OI.gyro.zeroYaw();
+			RioLogger.log("robotInit() currentYaw " + OI.gyro.getYaw());
+		} catch (RuntimeException ex) {
+			RioLogger.errorLog("navX-MXP initialization error " + ex);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team177.robot.commands;
 
-import org.usfirst.frc.team177.robot.OI;
+import org.usfirst.frc.team177.lib.RioLogger;
 
 public class AutoFromCenter extends AutoCommand {
 	private String fileName;
@@ -8,10 +8,10 @@ public class AutoFromCenter extends AutoCommand {
 	public AutoFromCenter(String gameData, boolean gameDataFromField) {
 		super(gameData);
 		if (autoGameData.charAt(RobotConstants.NEAR_SWITCH) == 'L') { 
-			OI.debugLog("AutoFromCenter driving left");
+			RioLogger.debugLog("AutoFromCenter driving left");
 			fileName = RobotConstants.CENTER_2_LEFT;
 		} else {
-			OI.debugLog("AutoFromCenter driving right");
+			RioLogger.debugLog("AutoFromCenter driving right");
 			fileName = RobotConstants.CENTER_2_RIGHT;
 		}
 		setAutoCommands(fileName,gameDataFromField);
@@ -25,11 +25,11 @@ public class AutoFromCenter extends AutoCommand {
 	private void setAutoCommands(String fileName,boolean gameDataFromField) {
 		addSequential(new ShiftHigh());
 		addSequential(new PlaybackSpeeds(fileName)); 
-		OI.debugLog("AutoFromCenter added PlaybackSpeeds. gameDataFromField " + gameDataFromField);
+		RioLogger.debugLog("AutoFromCenter added PlaybackSpeeds. gameDataFromField " + gameDataFromField);
 		//addSequential(new MoveElevatorAuto(ElevatorSetPosition.UP));
 		if (gameDataFromField) {
 			addSequential(new EjectCube());
-			OI.debugLog("AutoFromCenter added ejectCube ");
+			RioLogger.debugLog("AutoFromCenter added ejectCube ");
 		}
 	}
 }

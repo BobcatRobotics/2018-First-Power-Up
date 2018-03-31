@@ -61,7 +61,8 @@ public class RobotMap {
 	// Game Pad Buttons
 	public static int gamePadCubePickupReverse = 8;
 	public static int gamePadCubePickup = 6;
-	public static int gamePadCubeArms = 2;
+	public static int gamePadCubeArmsOpen = 1;
+	public static int gamePadCubeArmsClose = 2; 
 
 	public static int gamePadFourBarUpDown = 3;
 

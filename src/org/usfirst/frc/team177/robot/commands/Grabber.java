@@ -1,5 +1,6 @@
 package org.usfirst.frc.team177.robot.commands;
 
+import org.usfirst.frc.team177.lib.Commands;
 import org.usfirst.frc.team177.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,6 +23,9 @@ public class Grabber extends Command {
 		// DriverStation.reportError("Left = " + leftMotorSpeed + " right " + rightMotorSpeed, false);
 		OI.cubeLeftMotor.set(leftMotorSpeed);
 		OI.cubeRightMotor.set(rightMotorSpeed);
+		if (OI.isRecording) {
+			OI.cmdFile.addCommand(Commands.CUBE_SPINNERS, leftMotorSpeed, rightMotorSpeed, true);
+		}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,6 +39,7 @@ public class Grabber extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	// TODO:: Remove. This is never called, double check this
 		OI.cubeLeftMotor.stopMotor();
 		OI.cubeRightMotor.stopMotor();
 
@@ -45,6 +50,9 @@ public class Grabber extends Command {
     protected void interrupted() {
 		OI.cubeLeftMotor.stopMotor();
 		OI.cubeRightMotor.stopMotor();
+		if (OI.isRecording) {
+			OI.cmdFile.addCommand(Commands.CUBE_SPINNERS, 0.0, 0.0, false);
+		}
 
     }
 }

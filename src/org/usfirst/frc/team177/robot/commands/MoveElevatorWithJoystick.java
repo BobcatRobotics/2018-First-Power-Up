@@ -36,7 +36,8 @@ public class MoveElevatorWithJoystick extends MoveElevator {
 				break;
 			}
 		}
-		OI.elevator.elevate(motorSpeed);
+		// Add in a bias to hold the elevator down
+		OI.elevator.elevate(motorSpeed + RobotConstants.ELEVATOR_BIAS_POWER);
     }
 
 }

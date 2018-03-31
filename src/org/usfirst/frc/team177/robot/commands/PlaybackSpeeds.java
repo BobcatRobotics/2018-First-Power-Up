@@ -1,13 +1,14 @@
 package org.usfirst.frc.team177.robot.commands;
 
-import org.usfirst.frc.team177.lib.FileUtils;
+import org.usfirst.frc.team177.lib.RioLogger;
+import org.usfirst.frc.team177.lib.SpeedFile;
 import org.usfirst.frc.team177.robot.OI;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PlaybackSpeeds extends Command {
+	private SpeedFile sFile = null;
 	public boolean atEnd = false;
 
 	private PlaybackSpeeds() {
@@ -15,9 +16,9 @@ public class PlaybackSpeeds extends Command {
 
 	public PlaybackSpeeds(String fileName) {
 		this();
-		FileUtils.setFileName(fileName);
-		FileUtils.readRecording();
-		OI.debugLog("Playback Speeds finished reading " + fileName);
+		sFile = new SpeedFile(fileName);
+		sFile.readRecordingFile();
+		RioLogger.debugLog("Playback Speeds finished reading " + fileName);
 		atEnd = false;
 	}
 
@@ -25,16 +26,16 @@ public class PlaybackSpeeds extends Command {
 	@Override
     protected void execute() {
 		//double [] 
-		double [] speeds = FileUtils.getSpeed();
-		if (speeds[0] > 998.0) {
+		double [] power = sFile.getPower();
+		if (power[0] == 999.0) {
 			atEnd = true;
-			OI.debugLog("in playbackspecial execute, atEnd = true ");
+			RioLogger.debugLog("PlaybackSpeeds execute() atEnd = true");
 			return;
-			
 		}
 		
-		OI.driveTrain.drive(speeds[0], speeds[1]);
-		SmartDashboard.putNumber("read value of left side = " , speeds[0]);
+		OI.driveTrain.drive(power[0], power[1]);
+		SmartDashboard.putNumber("Playback left side power = " , power[0]);
+		SmartDashboard.putNumber("Playback right side power = " , power[1]);
    }
 
 	@Override

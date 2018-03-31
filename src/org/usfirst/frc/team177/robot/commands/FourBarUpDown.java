@@ -1,5 +1,6 @@
 package org.usfirst.frc.team177.robot.commands;
 
+import org.usfirst.frc.team177.lib.Commands;
 import org.usfirst.frc.team177.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,6 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class FourBarUpDown extends Command {
+	// TODO :: Check for a different type of command. I believe that there is a command that is executed once
+	// TODO :: would this work with button.toggleWhenPressed()
 	public static boolean state = false;
 
     public FourBarUpDown() {
@@ -32,6 +35,9 @@ public class FourBarUpDown extends Command {
     protected void end() {
     	// DriverStation.reportError("FourBarUpDown End Called = " + state, false);
     	OI.fourBar.set(state);
+    	if (OI.isRecording) {
+    		OI.cmdFile.addCommand(Commands.FOURBAR, 0.0, 0.0, state);
+    	}
     }
 
     // Called when another command which requires one or more of the same

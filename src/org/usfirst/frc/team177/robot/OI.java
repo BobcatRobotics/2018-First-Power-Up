@@ -7,13 +7,18 @@
 
 package org.usfirst.frc.team177.robot;
 
+import org.usfirst.frc.team177.lib.CommandFile;
 import org.usfirst.frc.team177.lib.RioLogger;
 import org.usfirst.frc.team177.lib.RioLoggerThread;
 import org.usfirst.frc.team177.lib.SmartDashLog;
+import org.usfirst.frc.team177.lib.SpeedFile;
 import org.usfirst.frc.team177.robot.commands.CubeArms;
+import org.usfirst.frc.team177.robot.commands.CubeArmsClose;
+import org.usfirst.frc.team177.robot.commands.CubeArmsOpen;
 import org.usfirst.frc.team177.robot.commands.EjectCube;
 import org.usfirst.frc.team177.robot.commands.FourBarUpDown;
 import org.usfirst.frc.team177.robot.commands.PickupCube;
+import org.usfirst.frc.team177.robot.commands.PlaybackCommands;
 import org.usfirst.frc.team177.robot.commands.ShiftHigh;
 import org.usfirst.frc.team177.robot.commands.ShiftLow;
 import org.usfirst.frc.team177.robot.commands.WinchIn;
@@ -53,12 +58,12 @@ public class OI {
 
 	/* Motors */
 	// Competition bot has VictorSPXs for the cube arm motors
-	public static WPI_VictorSPX cubeLeftMotor = new WPI_VictorSPX(RobotMap.cubePickupLeft);
-	public static WPI_VictorSPX cubeRightMotor = new WPI_VictorSPX(RobotMap.cubePickupRight);
+	//public static WPI_VictorSPX cubeLeftMotor = new WPI_VictorSPX(RobotMap.cubePickupLeft);
+	//public static WPI_VictorSPX cubeRightMotor = new WPI_VictorSPX(RobotMap.cubePickupRight);
 
 	// Practice bot has TalonSRXs for the cube arm motors (but CanIDs should be same)
-	//public static WPI_TalonSRX cubeLeftMotor = new WPI_TalonSRX(RobotMap.cubePickupLeft);
-	//public static WPI_TalonSRX cubeRightMotor = new WPI_TalonSRX(RobotMap.cubePickupRight);
+	public static WPI_TalonSRX cubeLeftMotor = new WPI_TalonSRX(RobotMap.cubePickupLeft);
+	public static WPI_TalonSRX cubeRightMotor = new WPI_TalonSRX(RobotMap.cubePickupRight);
 
 	// public static TalonMagEncoder elevatorEncoder = new TalonMagEngcoder(3);
 
@@ -78,7 +83,9 @@ public class OI {
 
 	/* Buttons */
 	public static Button btnCubePickup = new JoystickButton(gamePad, RobotMap.gamePadCubePickup);
-	public static Button btnCubeArms = new JoystickButton(gamePad, RobotMap.gamePadCubeArms);
+	public static Button btnCubeArmsOpen = new JoystickButton(gamePad, RobotMap.gamePadCubeArmsOpen);
+	public static Button btnCubeArmsClose = new JoystickButton(gamePad, RobotMap.gamePadCubeArmsClose);
+
 	public static Button btnCubePickupReverse = new JoystickButton(gamePad, RobotMap.gamePadCubePickupReverse);
 	public static Button btnFourBarUpDown = new JoystickButton(gamePad, RobotMap.gamePadFourBarUpDown);
 	// public static Button btnClimberUp = new JoystickButton(gamePad,
@@ -95,6 +102,12 @@ public class OI {
 	/* DigitBoard */
 	// public static DigitBoard digitBoard = DigitBoard.getInstance();
 
+	// These commands are in OI so that the teleop commands can access
+	public static SpeedFile sFile = null;
+	public static CommandFile cmdFile = null;
+	public static PlaybackCommands playCmd = null;
+	public static boolean isRecording = false;
+	
 	static {
 
 		driveTrain.setRightMotors(RobotMap.driveRightMotorFront, RobotMap.driveRightMotorMiddle,
@@ -108,7 +121,8 @@ public class OI {
 
 		btnCubePickup.whileHeld(new PickupCube());
 		btnCubePickupReverse.whileHeld(new EjectCube());
-		btnCubeArms.toggleWhenPressed(new CubeArms());
+		btnCubeArmsOpen.whenPressed(new CubeArmsOpen());
+		btnCubeArmsClose.whenPressed(new CubeArmsClose());
 		btnFourBarUpDown.toggleWhenPressed(new FourBarUpDown());
 
 		trigShifter.whenActive(new ShiftHigh());
@@ -120,43 +134,12 @@ public class OI {
 		btnClimberWinchOut.whileHeld(new WinchOut());
 
 		/* Navx mxp Gyro */
-		try {
-			/* Communicate w/navX-MXP via the MXP SPI Bus. */
-			gyro = new NavxGyro(SPI.Port.kMXP);
-			RioLogger.log("robotInit() called. navx-mxp initialized");
-
-			int maxCalibrationPasses = 20;
-			for (int iCalibrationPasses = 0; iCalibrationPasses < maxCalibrationPasses; iCalibrationPasses++) {
-				if (!gyro.isCalibrating())
-					break;
-				RioLogger.log("robotInit() gyro is calibrating, pass " + iCalibrationPasses);
-				try {
-					Thread.sleep(100); // Sleep 1/10 of second
-				} catch (InterruptedException e) {
-					String err = "navX-MXP initialization thread exception " + e;
-					DriverStation.reportError(err, false);
-					RioLogger.log(err);
-				}
-			}
-
-			RioLogger.log("robotInit() gyro is calibrating " + gyro.isCalibrating());
-			if (!gyro.isCalibrating())
-				gyro.zeroYaw();
-			RioLogger.log("robotInit() currentYaw " + gyro.getYaw());
-		} catch (RuntimeException ex) {
-			String err = "navX-MXP initialization error " + ex.getMessage();
-			DriverStation.reportError(err, false);
-			RioLogger.log(err);
-		}
+		gyro = new NavxGyro(SPI.Port.kMXP);
+		RioLogger.log("robotInit() called. navx-mxp initialized");
+		gyro.calibrate();
 
 		// Start Logging Thread
 		logFile = RioLoggerThread.getInstance();
 		RioLogger.log("OI static block finished.");
-	}
-
-	public static void debugLog (String line) {
-		DriverStation.reportError(line,false);
-		RioLogger.log(line);
-		
 	}
 }

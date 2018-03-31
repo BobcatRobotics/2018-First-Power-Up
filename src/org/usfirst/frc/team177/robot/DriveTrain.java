@@ -19,8 +19,8 @@ public class DriveTrain {
 	
 	private boolean invertLeft = true;
 	
-	private double leftPower = 0.2;
-	private double rightPower = 0.2;
+	private double leftPower = 0.0;
+	private double rightPower = 0.0;
 	
 	
 	public DriveTrain() {
@@ -116,6 +116,7 @@ public class DriveTrain {
 		leftPower = 0.0;
 		rightPower = 0.0;
 		
+		// TODO :: Could also use .stopMotor()
 		leftFront.set(0.0);
 		leftMiddle.set(0.0);
 		leftRear.set(0.0);

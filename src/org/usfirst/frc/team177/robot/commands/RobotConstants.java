@@ -12,6 +12,7 @@ public class RobotConstants {
 	// Speed Recording File Names
 	public static final String RECORD_FILE_NAME = "speedfile.txt";
 	public static final String CENTER_2_RIGHT =  "center2right.txt";
+	public static final String CENTER_2_RIGHT_SIMPLE = "center2right_simple.txt";
 	public static final String CENTER_2_LEFT = "center2left.txt";
 	public static final String LEFT_2_SCALE =  "left2scale.txt";
 	public static final String RIGHT_2_SCALE =  "right2scale.txt";
@@ -19,6 +20,12 @@ public class RobotConstants {
 	public static final String LEFT_2_SCALE_RIGHT =  "left2scaleright.txt";
 	public static final String LEFT_2_SCALE_SHORT =  "left2scale_short.txt";
 	public static final String RIGHT_2_SCALE_SHORT =  "right2scale_short.txt";
+	public static final String LEFT_2_SCALE_SHORT_SWITCH =  "left2scale_short_switch.txt";
+	public static final String RIGHT_2_SCALE_SHORT_SWITCH =  "right2scale_short_switch.txt";
+	// These files are generated from LEFT_2_SCALE, RIGHT_2_SCALE
+	public static final String LEFT_2_SCALE_NOSWITCH =  "left2scale_noswitch.txt";
+	public static final String RIGHT_2_SCALE_NOSWITCH =  "right2scale_noswitch.txt";
+	
 
 
 	// Options for Robot Starting position
@@ -79,7 +86,16 @@ public class RobotConstants {
 	// Constant 
 	public static final double CLIMBER_ARMMOTOR_COMMAND_PULLIN = 0.15;
 	public static final double CLIMBER_ARMMOTOR_COMMAND_OFF_TOL = 0.05;
-			
+	
+	// Elevator Power Tolerance Amount
+	public static final double ELEVATOR_POWER_TOL = 0.05;
+	
+	// Elevator Bias Amount
+	// This pwer will be constantly supplied to the elevator in teleop as
+	// part of MoveElevatorWithJoystick()
+	public static final double ELEVATOR_BIAS_POWER = -0.0; 
+	
+	
 	// Index of characters in the game data 
 	// 
 	public static final int NEAR_SWITCH = 0;

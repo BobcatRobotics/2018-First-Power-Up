@@ -13,6 +13,9 @@ public class Elevator {
 	
 	private DigitalInput topSwitch;  // Top Limit Switch
 	private DigitalInput bottomSwitch;	// Bottom Limit Switch
+	
+	private double elevatorSpeed = 0.0;
+	//private boolean isMoving = false;
 
 	
 	public Elevator() {
@@ -30,7 +33,7 @@ public class Elevator {
 		reset();
 	}	
 	
-	// CAUTION: there are two motors and one encoder, use correct motor
+	// CAUTION: there are two motors and one encoder, use correct motor!!
 	public double getEncoderPosition() {
 		return elevatorMotor2.getSelectedSensorPosition(0);
 	}
@@ -42,6 +45,9 @@ public class Elevator {
 	public void reset() {
 		elevatorMotor1.set(0.0);
 		elevatorMotor2.set(0.0);
+		
+		elevatorSpeed = 0.0;
+		//isMoving = false;
 	}
 
 	public void resetEncoder( ) {
@@ -51,21 +57,29 @@ public class Elevator {
 	public void stop () {
 		elevatorMotor1.stopMotor();
 		elevatorMotor2.stopMotor();
+		
+		elevatorSpeed = 0.0;
 	}
 	
-
 	public void elevate(double speed) {
 		elevatorMotor1.set(speed);
 		elevatorMotor2.set(speed);
+		
+		elevatorSpeed = speed;
 	}
 	
 	public double getMotor1Speed() {
 		return elevatorMotor1.get();
 	}
+	
 	public double getMotor2Speed() {
 		return elevatorMotor2.get();
 	}
 
+	public double getCurrentSpeed() {
+		return elevatorSpeed;
+	}
+	
 	public boolean upperSwitch() {
 		return topSwitch.get();
 	}
