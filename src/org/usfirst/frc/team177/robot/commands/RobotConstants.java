@@ -93,15 +93,11 @@ public class RobotConstants {
 	// Elevator Bias Amount
 	// This pwer will be constantly supplied to the elevator in teleop as
 	// part of MoveElevatorWithJoystick()
-	public static final double ELEVATOR_BIAS_POWER = -0.0; 
-	
+	public static final double ELEVATOR_BIAS_POWER = -0.1; 
 	
 	// Index of characters in the game data 
 	// 
 	public static final int NEAR_SWITCH = 0;
 	public static final int SCALE = 1;
 	public static final int FAR_SWITCH = 2;
-	
-
-
 }
