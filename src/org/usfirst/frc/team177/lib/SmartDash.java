@@ -50,7 +50,7 @@ public class SmartDash {
        	OI.elevator.displayDashboard();
        	
        	// Real Time Logger
-       	//SmartDashboard.putData("RealTimeLog",OI.smartLog);
+       	SmartDashboard.putData("RealTimeLog",OI.smartLog);
        	
       	/** Uncomment to test on Skateboard for lag 
        	SmartDashboard.putNumber("Current current draw of PDP channel 9: ", pdp.getCurrent(9));
