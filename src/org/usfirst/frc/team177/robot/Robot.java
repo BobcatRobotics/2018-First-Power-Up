@@ -122,6 +122,9 @@ public class Robot extends TimedRobot {
         if (!isCompetition)		{
              SmartDash.displayRecordPlaybackChoosers(recorder, fileRecorder);  
         }
+        RioLogger.log(" ");
+        RioLogger.log("========================================================== ");
+        RioLogger.log("In RobotInit() ");
   	}
 
 	/**
