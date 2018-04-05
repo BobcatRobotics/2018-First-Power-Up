@@ -72,9 +72,12 @@ public class SmartDash {
 		SmartDashboard.putString("Platform Data:", gameData);
 	}
 	
-	public static void displayCompetitionChoosers(SendableChooser<String> startPosition, SendableChooser<String> crossOver, SendableChooser<String> elevatorLimits, SendableChooser<String> climberPullin) {
+	public static void displayCompetitionChoosers(SendableChooser<String> startPosition,
+			SendableChooser<String> crossOver, SendableChooser<String> elevatorLimits,
+			SendableChooser<String> climberPullin, SendableChooser<String> twoCube) {
 		SmartDashboard.putData("Auto mode", startPosition);
 		SmartDashboard.putData("Auto Cross Over", crossOver);
+		SmartDashboard.putData("2 CUBE AUTO", twoCube);
 		SmartDashboard.putData("ELEVATOR LIMITS !!!", elevatorLimits);
 		SmartDashboard.putData("CLIMBER PULL IN !!!", climberPullin);
 	}
@@ -102,5 +105,9 @@ public class SmartDash {
 
 	public static void displayAutoFileName(String autoFileName) {
 		SmartDashboard.putString("Auto File Name", autoFileName);
+	}
+	
+	public static void display2CubeAuto(String twoCubeSelection) {
+		SmartDashboard.putString("2 Cube Selector (default = 2cubeon)", twoCubeSelection);
 	}
 }

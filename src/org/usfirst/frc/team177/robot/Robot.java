@@ -12,9 +12,6 @@ import org.usfirst.frc.team177.lib.Commands;
 import org.usfirst.frc.team177.lib.RioLogger;
 import org.usfirst.frc.team177.lib.SmartDash;
 import org.usfirst.frc.team177.lib.SpeedFile;
-import org.usfirst.frc.team177.robot.commands.AutoCommand;
-import org.usfirst.frc.team177.robot.commands.AutoFromCenter;
-import org.usfirst.frc.team177.robot.commands.AutoFromLeftRight;
 import org.usfirst.frc.team177.robot.commands.DriveWithJoysticks;
 import org.usfirst.frc.team177.robot.commands.MoveClimberArm;
 import org.usfirst.frc.team177.robot.commands.MoveElevator;
@@ -39,7 +36,7 @@ public class Robot extends TimedRobot {
 	//DigitalInput limitswitch1 = new DigitalInput(9);
 	
 	/* Commands */
-	AutoCommand auto;
+	//AutoCommand auto;
 	DriveWithJoysticks driveJoy;
 	MoveElevator moveElevator;
 	MoveClimberArm moveClimberArm;
@@ -60,6 +57,7 @@ public class Robot extends TimedRobot {
 	SendableChooser<String> crossOver = new SendableChooser<>();
 	SendableChooser<String> climberPullin = new SendableChooser<>();
 	SendableChooser<String> elevatorLimits = new SendableChooser<>();
+	SendableChooser<String> twoCubeSelector = new SendableChooser<>();
 	
 	// This boolean controls if the robot is in test recording or the robot
 	// is running in competition mode
@@ -117,7 +115,10 @@ public class Robot extends TimedRobot {
 		elevatorLimits.addDefault("Elevator Limits Enabled", RobotConstants.ELEVATOR_LIMITS_ON);
 		elevatorLimits.addObject("Elevator Limits !!!DISABLED!!!", RobotConstants.ELEVATOR_LIMITS_OFF);
 		
-		SmartDash.displayCompetitionChoosers(robotStartPosition, crossOver, elevatorLimits, climberPullin);
+		twoCubeSelector.addDefault("2 Cube Auto", RobotConstants.AUTO_2CUBE_ON);
+		twoCubeSelector.addObject("!!!2 Cube Auto NO!!! ", RobotConstants.AUTO_2CUBE_OFF);
+		
+		SmartDash.displayCompetitionChoosers(robotStartPosition, crossOver, elevatorLimits, climberPullin,twoCubeSelector);
 		
         if (!isCompetition)		{
              SmartDash.displayRecordPlaybackChoosers(recorder, fileRecorder);  
@@ -258,7 +259,8 @@ public class Robot extends TimedRobot {
 
 	private void autonomousCompetition(String gameData,boolean gameDataFromField) {
 		boolean isCrossOver = RobotConstants.AUTO_SCALE_CROSS.equals(crossOver.getSelected());
-		String autoFileName = determineAutoFile(startPosition,isCrossOver,gameData,gameDataFromField);
+		boolean is2Cube = RobotConstants.AUTO_2CUBE_ON.equals(twoCubeSelector.getSelected());
+		String autoFileName = determineAutoFile(startPosition,isCrossOver,gameData,gameDataFromField,is2Cube);
 		RioLogger.errorLog("Autonomous CMD File is  " + autoFileName);
 		if (OI.playCmd == null) {
 			OI.playCmd = new PlaybackCommands(autoFileName);
@@ -277,7 +279,7 @@ public class Robot extends TimedRobot {
 		OI.playCmd.initialize();
 	}
 	
-	private String determineAutoFile(String startPosition, boolean isCrossOver, String gameData, boolean gameDataFromField) {
+	private String determineAutoFile(String startPosition, boolean isCrossOver, String gameData, boolean gameDataFromField,boolean is2Cube) {
 		String fileName = RobotConstants.CENTER_2_LEFT; // Default
 		boolean isRobotCenter = RobotConstants.AUTO_ROBOT_MIDDLE.equals(startPosition);
 		boolean isRobotLeft = RobotConstants.AUTO_ROBOT_LEFT.equals(startPosition);
@@ -314,7 +316,11 @@ public class Robot extends TimedRobot {
 				if (gameDataFromField) {
 					// Easy - Left Switch, Left Scale
 					if (isLeftSwitch && isLeftScale) {
-						fileName = RobotConstants.LEFT_2_SCALE;
+						if (is2Cube) {
+							fileName = RobotConstants.LEFT_2_SCALE_2_CUBE;
+						} else {
+							fileName = RobotConstants.LEFT_2_SCALE;
+						}
 					}
 					// Left Scale, Right Switch
 					if (isLeftScale && isRightSwitch) {
@@ -342,7 +348,11 @@ public class Robot extends TimedRobot {
 				if (gameDataFromField) {
 					// Easy -  Right Switch, Right Scale
 					if (isRightSwitch && isRightScale) {
-						fileName = RobotConstants.RIGHT_2_SCALE;
+						if (is2Cube) {
+							fileName = RobotConstants.RIGHT_2_SCALE_2_CUBE;
+						} else {
+							fileName = RobotConstants.RIGHT_2_SCALE;
+						}
 					}
 					// Right Scale, Left Switch
 					if (isRightScale && isLeftSwitch) {
@@ -522,6 +532,7 @@ public class Robot extends TimedRobot {
 		if (!isCompetition) {
 			SmartDash.displayRecordState(recordState);
 			SmartDash.displayAutoFileName(autoFileName);
+			SmartDash.display2CubeAuto(twoCubeSelector.getSelected());
 		}
 	}
 

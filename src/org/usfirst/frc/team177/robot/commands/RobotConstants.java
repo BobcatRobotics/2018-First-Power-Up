@@ -8,7 +8,6 @@ public class RobotConstants {
 	protected static final double INITIAL_ELEVATOR_UP_POWER = 0.450;
 	protected static final double INITIAL_ELEVATOR_UP_STOP_POSITION = 600000.0;
 
-	
 	// Speed Recording File Names
 	public static final String RECORD_FILE_NAME = "speedfile.txt";
 	public static final String CENTER_2_RIGHT =  "center2right.txt";
@@ -25,9 +24,9 @@ public class RobotConstants {
 	// These files are generated from LEFT_2_SCALE, RIGHT_2_SCALE
 	public static final String LEFT_2_SCALE_NOSWITCH =  "left2scale_noswitch.txt";
 	public static final String RIGHT_2_SCALE_NOSWITCH =  "right2scale_noswitch.txt";
+	public static final String LEFT_2_SCALE_2_CUBE =  "left2scale_2cube.txt";
+	public static final String RIGHT_2_SCALE_2_CUBE =  "right2scale_2cube.txt";
 	
-
-
 	// Options for Robot Starting position
 	public static final String AUTO_ROBOT_LEFT = "aRobotLeft";
 	public static final String AUTO_ROBOT_MIDDLE = "aRobotMiddle";
@@ -44,6 +43,10 @@ public class RobotConstants {
 	// Options for Climber Pull In
 	public static final String ELEVATOR_LIMITS_ON = "on";
 	public static final String ELEVATOR_LIMITS_OFF = "off";
+
+	// Options for 2 Cube Auto
+	public static final String AUTO_2CUBE_ON = "2cubeon";
+	public static final String AUTO_2CUBE_OFF = "2cubeoff";
 
 	// Constants for Starting Position Left or Right
 	public static final double LR_DISTANCE_1 = 192.0;

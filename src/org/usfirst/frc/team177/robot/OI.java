@@ -12,7 +12,6 @@ import org.usfirst.frc.team177.lib.RioLogger;
 import org.usfirst.frc.team177.lib.RioLoggerThread;
 import org.usfirst.frc.team177.lib.SmartDashLog;
 import org.usfirst.frc.team177.lib.SpeedFile;
-import org.usfirst.frc.team177.robot.commands.CubeArms;
 import org.usfirst.frc.team177.robot.commands.CubeArmsClose;
 import org.usfirst.frc.team177.robot.commands.CubeArmsOpen;
 import org.usfirst.frc.team177.robot.commands.EjectCube;
@@ -24,10 +23,8 @@ import org.usfirst.frc.team177.robot.commands.ShiftLow;
 import org.usfirst.frc.team177.robot.commands.WinchIn;
 import org.usfirst.frc.team177.robot.commands.WinchOut;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
