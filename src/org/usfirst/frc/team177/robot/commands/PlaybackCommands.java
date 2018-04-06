@@ -44,7 +44,7 @@ public class PlaybackCommands {
     		if (readCmd) {
 	    		// Read a line from the file of commands
 	    		cmdRec = cmdFile.getRawData(cmdRecNbr);
-	    		RioLogger.debugLog("cmd rec nbr " + cmdRecNbr + " CMD is " + cmdRec.getID() +  " leftPwr " + cmdRec.getSpeed()[0]); 
+	    		// RioLogger.debugLog("cmd rec nbr " + cmdRecNbr + " CMD is " + cmdRec.getID() +  " leftPwr " + cmdRec.getSpeed()[0]); 
     		}
     		// Did I just read the EOF?, if so set finished and leave execute.
     		if (Commands.EOF.equals(cmdRec.getID())) {

@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
 	
 	// This boolean controls if the robot is in test recording or the robot
 	// is running in competition mode
-	boolean isCompetition = true;
+	boolean isCompetition = false;
 	boolean processedGameInfo = false;
 	boolean runSimpleAuto = false;
 	int autoGameChecks;
@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
 		fileRecorder.addObject("Right --> Scale Left, No Cross, No Switch", RobotConstants.RIGHT_2_SCALE_SHORT);
 		fileRecorder.addObject("Left --> Scale Right, No Cross, Switch", RobotConstants.LEFT_2_SCALE_SHORT_SWITCH);
 		fileRecorder.addObject("Right --> Scale Left, No Cross, Switch", RobotConstants.RIGHT_2_SCALE_SHORT_SWITCH);
+		fileRecorder.addObject("Left --> Scale, 2 cube", RobotConstants.LEFT_2_SCALE_2_CUBE);
+		fileRecorder.addObject("Right --> Scale, 2 cube", RobotConstants.RIGHT_2_SCALE_2_CUBE);
 
 		climberPullin.addDefault("Climber Pullin Enabled", RobotConstants.CLIMBER_PULLIN_ON);
 		climberPullin.addObject("Climber Pullin !!!DISABLED!!!", RobotConstants.CLIMBER_PULLIN_OFF);
