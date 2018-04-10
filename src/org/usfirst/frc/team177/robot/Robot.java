@@ -58,10 +58,12 @@ public class Robot extends TimedRobot {
 	SendableChooser<String> climberPullin = new SendableChooser<>();
 	SendableChooser<String> elevatorLimits = new SendableChooser<>();
 	SendableChooser<String> twoCubeSelector = new SendableChooser<>();
+	SendableChooser<String> sc195Mode = new SendableChooser<>();
+
 	
 	// This boolean controls if the robot is in test recording or the robot
 	// is running in competition mode
-	boolean isCompetition = false;
+	boolean isCompetition = true;
 	boolean processedGameInfo = false;
 	boolean runSimpleAuto = false;
 	int autoGameChecks;

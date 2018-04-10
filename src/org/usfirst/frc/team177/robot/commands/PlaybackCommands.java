@@ -4,6 +4,7 @@ import org.usfirst.frc.team177.lib.CommandFile;
 import org.usfirst.frc.team177.lib.CommandRecord;
 import org.usfirst.frc.team177.lib.Commands;
 import org.usfirst.frc.team177.lib.RioLogger;
+import org.usfirst.frc.team177.robot.ElevatorState;
 import org.usfirst.frc.team177.robot.OI;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -91,6 +92,16 @@ public class PlaybackCommands {
 				break;
 			case ELEVATOR:
 				double[] elevSpeeds = cmdRec.getSpeed();
+		    	if (OI.elevator.upperSwitch()) {
+					if (elevSpeeds[0] > 0.0) {
+						elevSpeeds[0] = 0.0;
+					}
+		    	}
+		    	if (OI.elevator.lowerSwitch()) {
+					if (elevSpeeds[0] < 0.0) {
+						elevSpeeds[0] = 0.0;
+					}
+		    	}
 				OI.elevator.elevate(elevSpeeds[0]);
 				break;
 			case FOURBAR:
