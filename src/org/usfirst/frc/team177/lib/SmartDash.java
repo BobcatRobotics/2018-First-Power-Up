@@ -110,4 +110,8 @@ public class SmartDash {
 	public static void display2CubeAuto(String twoCubeSelection) {
 		SmartDashboard.putString("2 Cube Selector (default = 2cubeon)", twoCubeSelection);
 	}
+
+	public static void display195Mode(String dash195) {
+		SmartDashboard.putString("195 Mode (default off)",dash195);
+	}
 }

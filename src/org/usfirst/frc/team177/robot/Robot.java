@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
 	private String recordState = "";
 	private String enableElevatorLimits = "";
 	private String enableClimberPullin = "";
+	private String dash195 = "";
 	private boolean gameDataFromField = false;
 	
 	SendableChooser<String> robotStartPosition = new SendableChooser<>();
@@ -121,6 +122,9 @@ public class Robot extends TimedRobot {
 		
 		twoCubeSelector.addDefault("2 Cube Auto", RobotConstants.AUTO_2CUBE_ON);
 		twoCubeSelector.addObject("!!!2 Cube Auto NO!!! ", RobotConstants.AUTO_2CUBE_OFF);
+	
+		sc195Mode.addDefault("195 mode not selected", RobotConstants.AUTO_195_OFF);
+		sc195Mode.addObject("!!!! 195 mode selected !!!!", RobotConstants.AUTO_195_ON);
 		
 		SmartDash.displayCompetitionChoosers(robotStartPosition, crossOver, elevatorLimits, climberPullin,twoCubeSelector);
 		
@@ -264,8 +268,10 @@ public class Robot extends TimedRobot {
 	private void autonomousCompetition(String gameData,boolean gameDataFromField) {
 		boolean isCrossOver = RobotConstants.AUTO_SCALE_CROSS.equals(crossOver.getSelected());
 		boolean is2Cube = RobotConstants.AUTO_2CUBE_ON.equals(twoCubeSelector.getSelected());
-		String autoFileName = determineAutoFile(startPosition,isCrossOver,gameData,gameDataFromField,is2Cube);
-		RioLogger.errorLog("Autonomous CMD File is  " + autoFileName);
+		boolean is195mode = RobotConstants.AUTO_195_ON.equals(sc195Mode.getSelected());
+
+		String autoFileName = determineAutoFile(startPosition,isCrossOver,gameData,gameDataFromField,is2Cube,is195mode);
+		RioLogger.errorLog("Autonomous CMD File is " + autoFileName);
 		if (OI.playCmd == null) {
 			OI.playCmd = new PlaybackCommands(autoFileName);
 			RioLogger.debugLog("created new PlaybackCommands");
@@ -283,12 +289,13 @@ public class Robot extends TimedRobot {
 		OI.playCmd.initialize();
 	}
 	
-	private String determineAutoFile(String startPosition, boolean isCrossOver, String gameData, boolean gameDataFromField,boolean is2Cube) {
+	private String determineAutoFile(String startPosition, boolean isCrossOver, String gameData, boolean gameDataFromField,boolean is2Cube, boolean is195mode) {
 		String fileName = RobotConstants.CENTER_2_LEFT; // Default
 		boolean isRobotCenter = RobotConstants.AUTO_ROBOT_MIDDLE.equals(startPosition);
 		boolean isRobotLeft = RobotConstants.AUTO_ROBOT_LEFT.equals(startPosition);
 		boolean isRobotRight = RobotConstants.AUTO_ROBOT_RIGHT.equals(startPosition);
 		
+
 		// Robot starts in Center
 		if (isRobotCenter) {
 			if (gameDataFromField) {
@@ -318,6 +325,13 @@ public class Robot extends TimedRobot {
 			// Robot starts on Left
 			if (isRobotLeft ) {
 				if (gameDataFromField) {
+					// 195 mode
+					if (is195mode && isLeftSwitch && isRightScale) {
+						return RobotConstants.LEFT_2_SCALE_SHORT_SWITCH;
+					}
+					if (is195mode && isLeftScale) {
+						return RobotConstants.LEFT_2_SCALE_SHORT;
+					}
 					// Easy - Left Switch, Left Scale
 					if (isLeftSwitch && isLeftScale) {
 						if (is2Cube) {
@@ -350,6 +364,14 @@ public class Robot extends TimedRobot {
 			// Robot starts on Right
 			if (isRobotRight) {
 				if (gameDataFromField) {
+					// 195 mode
+					if (is195mode && isRightSwitch && isLeftScale) {
+						return RobotConstants.RIGHT_2_SCALE_SHORT_SWITCH;
+					}
+					if (is195mode && isRightScale) {
+						return RobotConstants.RIGHT_2_SCALE_SHORT;
+					}
+	
 					// Easy -  Right Switch, Right Scale
 					if (isRightSwitch && isRightScale) {
 						if (is2Cube) {
@@ -525,12 +547,14 @@ public class Robot extends TimedRobot {
 		recordState = recorder.getSelected();
 		enableElevatorLimits = elevatorLimits.getSelected();
 		enableClimberPullin = climberPullin.getSelected();
+		dash195  = sc195Mode.getSelected();
 		SmartDash.displayControlValues();
 		SmartDash.displayGameData(gameData);
 		SmartDash.displayStartPosition(startPosition);
 		SmartDash.displayCrossOver(allowCrossOver);
 		SmartDash.displayElevatorLimits(enableElevatorLimits);
 		SmartDash.displayClimberPullin(enableClimberPullin);
+		SmartDash.display195Mode(dash195);
 		OI.elevatorLimitIsEnabled = RobotConstants.ELEVATOR_LIMITS_ON.equals(enableElevatorLimits);
 		OI.climbPullinIsEnabled = RobotConstants.CLIMBER_PULLIN_ON.equals(enableClimberPullin);
 		if (!isCompetition) {

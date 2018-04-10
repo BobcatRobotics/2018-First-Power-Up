@@ -48,6 +48,10 @@ public class RobotConstants {
 	public static final String AUTO_2CUBE_ON = "2cubeon";
 	public static final String AUTO_2CUBE_OFF = "2cubeoff";
 
+	// Options for 195 mode
+	public static final String AUTO_195_ON = "195on";
+	public static final String AUTO_195_OFF = "195off";
+	
 	// Constants for Starting Position Left or Right
 	public static final double LR_DISTANCE_1 = 192.0;
 	public static final double LR_DISTANCE_2 = 30.0;
