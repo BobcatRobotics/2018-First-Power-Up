@@ -7,6 +7,10 @@
 
 package org.usfirst.frc.team177.robot;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.usfirst.frc.team177.lib.CommandFile;
 import org.usfirst.frc.team177.lib.Commands;
 import org.usfirst.frc.team177.lib.RioLogger;
@@ -75,14 +79,9 @@ public class Robot extends TimedRobot {
 	boolean isRecording = false;
 	boolean isCmdFileEOF = false;
 	boolean isElevatorInTolerance = true;
-
-	// These booleans are used to trigger recording teleop during a match
-	// Record from teleopInit() --> disabledInit() 
-	// 3/15 - Will not be needed in competition
-	/**
-	boolean recordTeleop = false;
-	boolean isTeleopRecording = false;
-	*/
+	
+	// Record Competition File
+	SpeedFile competitionData = null;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -149,16 +148,6 @@ public class Robot extends TimedRobot {
 
 		// If I'm disabled clear any playback object I've defined in a prior trip through the code
 		OI.playCmd = null;
-
-		
-		// If recording in Competition, stop and write file
-		// Shut if off
-		//		if (isCompetition && isTeleopRecording ) {
-		//			sFile.stopRecording();
-		//			recordTeleop = false;
-		//			isTeleopRecording = false;
-		//		}
-		
 	}
 
 	@Override
@@ -223,6 +212,13 @@ public class Robot extends TimedRobot {
 				autonomousTestRecording();
 			}
         }
+		// In competition - Record the Robot.  Start recording with a file 
+		if (isCompetition) {
+			String path =  File.separator + "home" + File.separator + "lvuser" + File.separator ;
+			String filename = path+ new SimpleDateFormat("competition.yyyy-MM-dd_hh.mm.ss'.txt'").format(new Date());
+			competitionData = new SpeedFile(filename);
+			competitionData.startRecording();
+		}
 	}
 
 
@@ -262,6 +258,14 @@ public class Robot extends TimedRobot {
 			if (!processedGameInfo) {
 		    	autoGameChecks++;
 			}
+		}
+		
+		// In competition - Records robot. Add speeds
+		if (isCompetition) {
+			competitionData.addSpeed
+			  (OI.driveTrain.getLeftPower(), OI.driveTrain.getRightPower(),
+			   OI.driveTrain.getLeftDistance(), OI.driveTrain.getRightDistance(),
+			   OI.driveTrain.getLeftRate(), OI.driveTrain.getRightRate());
 		}
 	}
 
@@ -434,7 +438,11 @@ public class Robot extends TimedRobot {
 			OI.sFile = new SpeedFile(speedFileName);
 			OI.cmdFile = new CommandFile(autoRecorderName);
 		}
-
+		
+		// If recording in Competition, stop and write file
+		if (isCompetition) {
+			competitionData.stopRecording();
+		}
 	}
 
 	/**
@@ -487,24 +495,6 @@ public class Robot extends TimedRobot {
 			}
 
 		}
-		
-		// In competition - Records a file during teleop
-		// Start recording with a file 
-		//		if (isCompetition) {
-		//			String path =  File.separator + "home" + File.separator + "lvuser" + File.separator ;
-		//			String filename = path+ new SimpleDateFormat("recorder.yyyy-MM-dd_hh.mm.ss'.txt'").format(new Date());
-		//			if (recordTeleop && !isTeleopRecording) {
-		//				sFile = new SpeedFile(filename);
-		//				sFile.startRecording();
-		//				isTeleopRecording = true;
-		//			}
-		//			if (isTeleopRecording) {
-		//				sFile.addSpeed
-		//				  (OI.driveTrain.getLeftPower(), OI.driveTrain.getRightPower(),
-		//				   OI.driveTrain.getLeftDistance(), OI.driveTrain.getRightDistance(),
-		//				   OI.driveTrain.getLeftRate(), OI.driveTrain.getRightRate());
-		//			}
-		//		}
 	}
 
 	/**
