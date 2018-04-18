@@ -74,10 +74,11 @@ public class SmartDash {
 	
 	public static void displayCompetitionChoosers(SendableChooser<String> startPosition,
 			SendableChooser<String> crossOver, SendableChooser<String> elevatorLimits,
-			SendableChooser<String> climberPullin, SendableChooser<String> twoCube) {
+			SendableChooser<String> climberPullin, SendableChooser<String> twoCube, SendableChooser<String> sc195Mode) {
 		SmartDashboard.putData("Auto mode", startPosition);
 		SmartDashboard.putData("Auto Cross Over", crossOver);
 		SmartDashboard.putData("2 CUBE AUTO", twoCube);
+		SmartDashboard.putData("Select 195 team mode", sc195Mode);
 		SmartDashboard.putData("ELEVATOR LIMITS !!!", elevatorLimits);
 		SmartDashboard.putData("CLIMBER PULL IN !!!", climberPullin);
 	}

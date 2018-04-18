@@ -7,9 +7,9 @@
 
 package org.usfirst.frc.team177.robot;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.io.File;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
 
 import org.usfirst.frc.team177.lib.CommandFile;
 import org.usfirst.frc.team177.lib.Commands;
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
 	boolean isElevatorInTolerance = true;
 	
 	// Record Competition File
-	SpeedFile competitionData = null;
+	//SpeedFile competitionData = null;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
 		sc195Mode.addDefault("195 mode not selected", RobotConstants.AUTO_195_OFF);
 		sc195Mode.addObject("!!!! 195 mode selected !!!!", RobotConstants.AUTO_195_ON);
 		
-		SmartDash.displayCompetitionChoosers(robotStartPosition, crossOver, elevatorLimits, climberPullin,twoCubeSelector);
+		SmartDash.displayCompetitionChoosers(robotStartPosition, crossOver, elevatorLimits, climberPullin,twoCubeSelector,sc195Mode);
 		
         if (!isCompetition)		{
              SmartDash.displayRecordPlaybackChoosers(recorder, fileRecorder);  
@@ -213,12 +213,13 @@ public class Robot extends TimedRobot {
 			}
         }
 		// In competition - Record the Robot.  Start recording with a file 
-		if (isCompetition) {
-			String path =  File.separator + "home" + File.separator + "lvuser" + File.separator ;
-			String filename = path+ new SimpleDateFormat("competition.yyyy-MM-dd_hh.mm.ss'.txt'").format(new Date());
-			competitionData = new SpeedFile(filename);
-			competitionData.startRecording();
-		}
+//		if (isCompetition) {
+//			String path =  File.separator + "home" + File.separator + "lvuser" + File.separator ;
+//			String filename = path+ new SimpleDateFormat("competition.yyyy-MM-dd_hh.mm.ss'.txt'").format(new Date());
+//			String filename = path+ "competition." + new SimpleDateFormat("yyyy-MM-dd_hh.mm.ss").format(new Date()) + ".txt";
+//			competitionData = new SpeedFile(filename);
+//			competitionData.startRecording();
+//		}
 	}
 
 
@@ -261,12 +262,12 @@ public class Robot extends TimedRobot {
 		}
 		
 		// In competition - Records robot. Add speeds
-		if (isCompetition) {
-			competitionData.addSpeed
-			  (OI.driveTrain.getLeftPower(), OI.driveTrain.getRightPower(),
-			   OI.driveTrain.getLeftDistance(), OI.driveTrain.getRightDistance(),
-			   OI.driveTrain.getLeftRate(), OI.driveTrain.getRightRate());
-		}
+		//if (isCompetition) {
+		//	competitionData.addSpeed
+		//	  (OI.driveTrain.getLeftPower(), OI.driveTrain.getRightPower(),
+		//	   OI.driveTrain.getLeftDistance(), OI.driveTrain.getRightDistance(),
+		//	   OI.driveTrain.getLeftRate(), OI.driveTrain.getRightRate());
+		//}
 	}
 
 	private void autonomousCompetition(String gameData,boolean gameDataFromField) {
@@ -440,9 +441,9 @@ public class Robot extends TimedRobot {
 		}
 		
 		// If recording in Competition, stop and write file
-		if (isCompetition) {
-			competitionData.stopRecording();
-		}
+//		if (isCompetition) {
+//			competitionData.stopRecording();
+//		}
 	}
 
 	/**

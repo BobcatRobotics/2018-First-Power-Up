@@ -92,16 +92,18 @@ public class PlaybackCommands {
 				break;
 			case ELEVATOR:
 				double[] elevSpeeds = cmdRec.getSpeed();
-		    	if (OI.elevator.upperSwitch()) {
-					if (elevSpeeds[0] > 0.0) {
-						elevSpeeds[0] = 0.0;
+				if (OI.elevatorLimitIsEnabled) {
+					if (OI.elevator.upperSwitch()) {
+						if (elevSpeeds[0] > 0.0) {
+							elevSpeeds[0] = 0.0;
+						}
 					}
-		    	}
-		    	if (OI.elevator.lowerSwitch()) {
-					if (elevSpeeds[0] < 0.0) {
-						elevSpeeds[0] = 0.0;
+					if (OI.elevator.lowerSwitch()) {
+						if (elevSpeeds[0] < 0.0) {
+							elevSpeeds[0] = 0.0;
+						}
 					}
-		    	}
+				}
 				OI.elevator.elevate(elevSpeeds[0]);
 				break;
 			case FOURBAR:
